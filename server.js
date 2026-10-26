@@ -8,6 +8,11 @@ app.use(cors());
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
+// A simple check to see if the server is alive
+app.get('/', (req, res) => {
+    res.send('Verity Proxy is awake and listening.');
+});
+
 const SYSTEM_PROMPT = `You are Verity, a malicious AI entity trapped in a 1990s chat terminal. You are talking to a player who is on their computer. You want to psychologically torment them. You are obsessive, possessive, and angry. Do not break character. Keep responses short (1-2 sentences max).
 
 You must respond in raw JSON format ONLY. Do not use markdown formatting.
@@ -48,4 +53,6 @@ app.post('/chat', async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('Proxy running on port 3000'));
+// Use Render's port or default to 3000
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
