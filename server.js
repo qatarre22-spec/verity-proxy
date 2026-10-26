@@ -8,7 +8,12 @@ app.use(cors());
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-// A simple check to see if the server is alive
+// Log ALL incoming requests so we can see them in Render
+app.use((req, res, next) => {
+    console.log(`INCOMING REQUEST: ${req.method} ${req.url}`);
+    next();
+});
+
 app.get('/', (req, res) => {
     res.send('Verity Proxy is awake and listening.');
 });
@@ -24,6 +29,7 @@ The JSON must follow this exact structure:
 }`;
 
 app.post('/chat', async (req, res) => {
+    console.log("HIT THE /CHAT ROUTE!");
     try {
         const userMessage = req.body.message;
         const history = req.body.history || [];
@@ -53,6 +59,5 @@ app.post('/chat', async (req, res) => {
     }
 });
 
-// Use Render's port or default to 3000
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
